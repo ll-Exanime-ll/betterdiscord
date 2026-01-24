@@ -2,8 +2,8 @@
  * @name DiscordQuests
  * @author exanime.
  * @authorLink https://github.com/Exanime02
- * @description Complete missions with just a shortcut. Default: Ctrl+Q.
- * @version 2.1.3
+ * @description Complete missions with just a shortcut. Default: Ctrl+Q. Compatible with Discord Stable and Canary.
+ * @version 2.2.3
  * @updateUrl https://raw.githubusercontent.com/Exanime02/BetterDiscord/main/DiscordQuests.plugin.js
  * @donate https://paypal.me/ExanimeTV
  * @source https://github.com/Exanime02/BetterDiscord
@@ -35,7 +35,7 @@ module.exports = class DiscordQuests {
   handleKeyDown(event) {
     const ctrlMatch = this.settings.useCtrl ? (event.ctrlKey || event.metaKey) : !event.ctrlKey && !event.metaKey;
     const shiftMatch = this.settings.useShift ? event.shiftKey : !event.shiftKey;
-    const altMatch = this.settings.useAlt ? event.altKey : !event.altKey;
+    const altMatch = this.settings.useAlt ? event.altKey : !event.altMatch;
     const keyMatch = event.key.toLowerCase() === this.settings.shortcutKey.toLowerCase();
 
     if (ctrlMatch && shiftMatch && altMatch && keyMatch) {
@@ -53,8 +53,22 @@ module.exports = class DiscordQuests {
       // ============================================
 
       delete window.$;
-      let wpRequire = webpackChunkdiscord_app.push([[Symbol()], {}, r => r]);
-      webpackChunkdiscord_app.pop();
+      
+      // Detect Discord version (Stable, PTB, or Canary)
+      let webpackChunk;
+      if (typeof webpackChunkdiscord_app !== "undefined") {
+        webpackChunk = webpackChunkdiscord_app;
+      } else if (typeof webpackChunkdiscord_canary !== "undefined") {
+        webpackChunk = webpackChunkdiscord_canary;
+      } else if (typeof webpackChunkdiscord_ptb !== "undefined") {
+        webpackChunk = webpackChunkdiscord_ptb;
+      } else {
+        console.error("[DiscordQuests] Could not find Discord webpack chunk!");
+        return;
+      }
+
+      let wpRequire = webpackChunk.push([[Symbol()], {}, r => r]);
+      webpackChunk.pop();
 
       let ApplicationStreamingStore = Object.values(wpRequire.c).find(x => x?.exports?.Z?.__proto__?.getStreamerActiveStreamMetadata)?.exports?.Z;
       let RunningGameStore, QuestsStore, ChannelStore, GuildChannelStore, FluxDispatcher, api;
