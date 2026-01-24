@@ -3,7 +3,7 @@
  * @author exanime.
  * @authorLink https://github.com/Exanime02
  * @description Complete missions with just a shortcut. Default: Ctrl+Q. Compatible with Discord Stable and Canary.
- * @version 3.5.0
+ * @version 3.5.1
  * @updateUrl https://raw.githubusercontent.com/Exanime02/BetterDiscord/main/DiscordQuests.plugin.js
  * @donate https://paypal.me/ExanimeTV
  * @source https://github.com/Exanime02/BetterDiscord
@@ -398,14 +398,23 @@ module.exports = class DiscordQuests {
     const style = document.createElement("style");
     style.textContent = `
       .dq-row { display:flex; align-items:center; justify-content:space-between; gap:16px; margin: 8px 0; }
-      .dq-label { width: 220px; font-weight:600; font-size:14px; color:var(--text-normal,#FFFFFF); }
-      .dq-input, .dq-select { flex:1; max-width: 420px; min-width:120px; }
-      .dq-input input { width:100%; padding:10px 12px; border-radius:8px; background:var(--background-modifier-hover,#2f3136); border:1px solid rgba(0,0,0,0.2); color:var(--text-normal,#FFFFFF); }
+      .dq-label { width: 220px; font-weight:600; font-size:16px; color:var(--text-normal,#FFFFFF); } /* tamaño de fuente aumentado */
+      .dq-input, .dq-select { width: 200px; }
+      .dq-input input, .dq-select select {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 8px;
+        background: var(--background-modifier-hover,#2f3136);
+        border: 1px solid rgba(0,0,0,0.2);
+        color: var(--text-normal,#FFFFFF);
+        box-sizing: border-box;
+        font-size: 14px;
+      }
       .dq-select { position:relative; }
-      .dq-select select { width:100%; padding:10px 12px; padding-right:36px; border-radius:8px; background:var(--background-modifier-hover,#2f3136); border:1px solid rgba(0,0,0,0.2); color:var(--text-normal,#FFFFFF); appearance: none; -webkit-appearance: none; -moz-appearance: none; }
-      .dq-select::after { content: "▾"; position: absolute; right:12px; top:50%; transform: translateY(-50%); pointer-events: none; color: var(--text-normal,#FFFFFF); font-size:12px; opacity:0.95; }
+      /* eliminada la flecha desplegable */
       .dq-divider { height:1px; background: rgba(255,255,255,0.06); margin:14px 0; border-radius:2px; }
       .dq-actions { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:8px; }
+      .dq-update-title { font-weight: 600; font-size: 16px; margin-bottom: 6px; color: var(--text-normal,#FFFFFF); } /* título con mismo estilo */
       .dq-update-btn { padding:8px 14px; border-radius:8px; background: #3f8cff; color:white; border:none; cursor:pointer; }
       .dq-update-btn:hover { background:#3577e6; }
       .dq-note { color: rgba(181,186,193,1); font-size:12px; margin-top:6px; }
@@ -498,11 +507,10 @@ module.exports = class DiscordQuests {
     actionsLeft.style.display = "flex";
     actionsLeft.style.flexDirection = "column";
 
-    const updateLabel = document.createElement("div");
-    updateLabel.textContent = "Update Plugin";
-    updateLabel.style.fontWeight = "600";
-    updateLabel.style.marginBottom = "6px";
-    actionsLeft.appendChild(updateLabel);
+    const updateTitle = document.createElement("div");
+    updateTitle.className = "dq-update-title";
+    updateTitle.textContent = "Update Plugin";
+    actionsLeft.appendChild(updateTitle);
 
     const updateNote = document.createElement("div");
     updateNote.className = "dq-note";
