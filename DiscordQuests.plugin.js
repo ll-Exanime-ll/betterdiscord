@@ -1,6 +1,6 @@
 /**
  * @name DiscordQuests
- * @author exanime.
+ * @author Exánime
  * @authorLink https://github.com/Exanime02
  * @description Complete missions with just a shortcut. Default: Ctrl+Q. Compatible with Discord Stable and Canary.
  * @version 3.5.1
@@ -543,5 +543,6 @@ module.exports = class DiscordQuests {
     return container;
   }
 };
+
 
 
